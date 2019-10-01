@@ -1,9 +1,14 @@
 package com.androdocs.weatherapp;
 
 //import android.os.AsyncTask;
+import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import com.androdocs.httprequest.HttpRequest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,53 +29,17 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    String CITY = "dhaka,bd";
-
-    TextView addressTxt, updated_atTxt, statusTxt, tempTxt, temp_minTxt, temp_maxTxt, sunriseTxt,
-            sunsetTxt, windTxt, pressureTxt, humidityTxt, dummy;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        addressTxt = findViewById(R.id.address);
-        updated_atTxt = findViewById(R.id.updated_at);
-        statusTxt = findViewById(R.id.status);
-        tempTxt = findViewById(R.id.temp);
-        temp_minTxt = findViewById(R.id.temp_min);
-        temp_maxTxt = findViewById(R.id.temp_max);
-        sunriseTxt = findViewById(R.id.sunrise);
-        sunsetTxt = findViewById(R.id.sunset);
-        windTxt = findViewById(R.id.wind);
-        pressureTxt = findViewById(R.id.pressure);
-        humidityTxt = findViewById(R.id.humidity);
-
-        dummy = findViewById(R.id.dummy);
-
-        String data="";
-        data = ( (new WeatherHttpClient()).getWeatherData(CITY));
-
-        if (data != "") {
-            dummy.setText(data);
-        }
-
-    }
 
 
-
-
-    /*String CITY = "dhaka,bd";
-    String API = "8118ed6ee68db2debfaaa5a44c832918";
-
-    TextView addressTxt, updated_atTxt, statusTxt, tempTxt, temp_minTxt, temp_maxTxt, sunriseTxt,
+    TextView updated_atTxt, statusTxt, tempTxt, temp_minTxt, temp_maxTxt, sunriseTxt,
             sunsetTxt, windTxt, pressureTxt, humidityTxt;
-
+    EditText address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        addressTxt = findViewById(R.id.address);
+
         updated_atTxt = findViewById(R.id.updated_at);
         statusTxt = findViewById(R.id.status);
         tempTxt = findViewById(R.id.temp);
@@ -82,103 +51,24 @@ public class MainActivity extends AppCompatActivity {
         pressureTxt = findViewById(R.id.pressure);
         humidityTxt = findViewById(R.id.humidity);
 
-        new weatherTask().execute();*/
+        new WeatherTask().execute();
     }
 
-class WeatherHttpClient {
-
-    private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
-    private static String IMG_URL = "http://openweathermap.org/img/w/";
-    private static String APPID = "157771a599a39dabe7b641652b7f7de3";
-    public String getWeatherData(String location) {
-        HttpURLConnection con = null ;
-        InputStream is = null;
-
-        try {
-            con = (HttpURLConnection) ( new URL(BASE_URL + location + "&APPID=" + APPID)).openConnection();
-            con.setRequestMethod("GET");
-            con.setDoInput(true);
-            con.setDoOutput(true);
-            con.connect();
-
-            // Let's read the response
-            StringBuffer buffer = new StringBuffer();
-            is = con.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line = null;
-            while ( (line = br.readLine()) != null )
-                buffer.append(line + "rn");
-
-            is.close();
-            con.disconnect();
-            return buffer.toString();
-        }
-        catch(Throwable t) {
-            t.printStackTrace();
-        }
-        finally {
-            try { is.close(); } catch(Throwable t) {}
-            try { con.disconnect(); } catch(Throwable t) {}
-        }
-
-        return null;
-
-    }
-    public byte[] getImage(String code) {
-        HttpURLConnection con = null ;
-        InputStream is = null;
-        try {
-            con = (HttpURLConnection) ( new URL(IMG_URL + code)).openConnection();
-            con.setRequestMethod("GET");
-            con.setDoInput(true);
-            con.setDoOutput(true);
-            con.connect();
-
-            // Let's read the response
-            is = con.getInputStream();
-            byte[] buffer = new byte[1024];
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            while ( is.read(buffer) != -1)
-                baos.write(buffer);
-
-            return baos.toByteArray();
-        }
-        catch(Throwable t) {
-            t.printStackTrace();
-        }
-        finally {
-            try { is.close(); } catch(Throwable t) {}
-            try { con.disconnect(); } catch(Throwable t) {}
-        }
-
-        return null;
-
-    }
-}
-
-    /*class weatherTask extends AsyncTask<String, Void, String> {
+    class WeatherTask extends AsyncTask<String, Void, String> {
+        String CITY = "Pune,IN";
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();*/
-
-            /* Showing the ProgressBar, Making the main design GONE */
-            /*findViewById(R.id.loader).setVisibility(View.VISIBLE);
-            findViewById(R.id.mainContainer).setVisibility(View.GONE);
-            findViewById(R.id.errorText).setVisibility(View.GONE);
-        }
-
         protected String doInBackground(String... args) {
-            String response = HttpRequest.excuteGet("https://api.openweathermap.org/data/2.5/weather?q=" + CITY + "&units=metric&appid=" + API);
-            return response;
+            String data;
+            data = ((new WeatherHttpClient()).getWeatherData(CITY));
+            return data;
         }
 
         @Override
-        protected void onPostExecute(String result) {
-
+        protected void onPostExecute(String data) {
+            super.onPostExecute(data);
 
             try {
-                JSONObject jsonObj = new JSONObject(result);
+                JSONObject jsonObj = new JSONObject(data);
                 JSONObject main = jsonObj.getJSONObject("main");
                 JSONObject sys = jsonObj.getJSONObject("sys");
                 JSONObject wind = jsonObj.getJSONObject("wind");
@@ -197,11 +87,11 @@ class WeatherHttpClient {
                 String windSpeed = wind.getString("speed");
                 String weatherDescription = weather.getString("description");
 
-                String address = jsonObj.getString("name") + ", " + sys.getString("country");*/
+                String address = jsonObj.getString("name") + ", " + sys.getString("country");
 
 
                 /* Populating extracted data into our views */
-                /*addressTxt.setText(address);
+
                 updated_atTxt.setText(updatedAtText);
                 statusTxt.setText(weatherDescription.toUpperCase());
                 tempTxt.setText(temp);
@@ -211,18 +101,55 @@ class WeatherHttpClient {
                 sunsetTxt.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(new Date(sunset * 1000)));
                 windTxt.setText(windSpeed);
                 pressureTxt.setText(pressure);
-                humidityTxt.setText(humidity);*/
+                humidityTxt.setText(humidity);
 
                 /* Views populated, Hiding the loader, Showing the main design */
                 /*findViewById(R.id.loader).setVisibility(View.GONE);
-                findViewById(R.id.mainContainer).setVisibility(View.VISIBLE);
+                findViewById(R.id.mainContainer).setVisibility(View.VISIBLE);*/
 
 
             } catch (JSONException e) {
-                findViewById(R.id.loader).setVisibility(View.GONE);
-                findViewById(R.id.errorText).setVisibility(View.VISIBLE);
+                //findViewById(R.id.loader).setVisibility(View.GONE);
+                //findViewById(R.id.errorText).setVisibility(View.VISIBLE);
             }
-
         }
     }
-}*/
+}
+
+class WeatherHttpClient {
+
+    private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
+    private static String IMG_URL = "http://openweathermap.org/img/w/";
+    private static String APPID = "157771a599a39dabe7b641652b7f7de3";
+    public String getWeatherData(String location) {
+        HttpURLConnection con = null ;
+        InputStreamReader is = null;
+
+        try {
+            URL url = new URL(BASE_URL + location + "&units=metric&appid=" + APPID);
+            con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.connect();
+
+            // Let's read the response
+            is = new InputStreamReader(con.getInputStream());
+            BufferedReader reader = new BufferedReader(is);
+            StringBuilder strBuilder = new StringBuilder();
+            String line = null;
+            while ( (line = reader.readLine()) != null )
+                strBuilder.append(line);
+
+            is.close();
+            con.disconnect();
+            return strBuilder.toString();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            try { is.close(); } catch(Exception e) {}
+            try { con.disconnect(); } catch(Exception e) {}
+        }
+        return "";
+    }
+}
