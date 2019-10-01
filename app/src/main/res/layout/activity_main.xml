@@ -35,7 +35,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif-thin"
                 android:text="29°C"
-                android:textSize="90dp" />
+                android:textSize="90sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -296,23 +296,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/dummy"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_above="@+id/overviewContainer"
-            android:layout_below="@+id/addressContainer"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="153dp"
-            android:layout_marginLeft="153dp"
-            android:layout_marginTop="73dp"
-            android:layout_marginEnd="150dp"
-            android:layout_marginRight="150dp"
-            android:layout_marginBottom="59dp"
-            android:text="TextView" />
     </RelativeLayout>
 
 
