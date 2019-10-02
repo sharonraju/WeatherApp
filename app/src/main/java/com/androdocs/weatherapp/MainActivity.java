@@ -56,6 +56,16 @@ public class MainActivity extends AppCompatActivity {
 
     class WeatherTask extends AsyncTask<String, Void, String> {
         String CITY = "Pune,IN";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            /* Showing the ProgressBar, Making the main design GONE */
+            findViewById(R.id.loader).setVisibility(View.VISIBLE);
+            findViewById(R.id.mainContainer).setVisibility(View.GONE);
+            findViewById(R.id.errorText).setVisibility(View.GONE);
+        }
         @Override
         protected String doInBackground(String... args) {
             String data;
@@ -68,7 +78,10 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(data);
 
             try {
+
                 JSONObject jsonObj = new JSONObject(data);
+
+
                 JSONObject main = jsonObj.getJSONObject("main");
                 JSONObject sys = jsonObj.getJSONObject("sys");
                 JSONObject wind = jsonObj.getJSONObject("wind");
@@ -90,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 String address = jsonObj.getString("name") + ", " + sys.getString("country");
 
 
-                /* Populating extracted data into our views */
+
 
                 updated_atTxt.setText(updatedAtText);
                 statusTxt.setText(weatherDescription.toUpperCase());
@@ -103,14 +116,16 @@ public class MainActivity extends AppCompatActivity {
                 pressureTxt.setText(pressure);
                 humidityTxt.setText(humidity);
 
+
                 /* Views populated, Hiding the loader, Showing the main design */
-                /*findViewById(R.id.loader).setVisibility(View.GONE);
-                findViewById(R.id.mainContainer).setVisibility(View.VISIBLE);*/
+                findViewById(R.id.loader).setVisibility(View.GONE);
+                findViewById(R.id.mainContainer).setVisibility(View.VISIBLE);
 
 
             } catch (JSONException e) {
-                //findViewById(R.id.loader).setVisibility(View.GONE);
-                //findViewById(R.id.errorText).setVisibility(View.VISIBLE);
+                findViewById(R.id.loader).setVisibility(View.GONE);
+                findViewById(R.id.errorText).setVisibility(View.VISIBLE);
+                e.printStackTrace();
             }
         }
     }
@@ -121,6 +136,8 @@ class WeatherHttpClient {
     private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
     private static String IMG_URL = "http://openweathermap.org/img/w/";
     private static String APPID = "157771a599a39dabe7b641652b7f7de3";
+    public static final int READ_TIMEOUT = 15000;
+    public static final int CONNECTION_TIMEOUT = 15000;
     public String getWeatherData(String location) {
         HttpURLConnection con = null ;
         InputStreamReader is = null;
@@ -129,6 +146,8 @@ class WeatherHttpClient {
             URL url = new URL(BASE_URL + location + "&units=metric&appid=" + APPID);
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
+            con.setReadTimeout(READ_TIMEOUT);
+            con.setConnectTimeout(CONNECTION_TIMEOUT);
             con.connect();
 
             // Let's read the response

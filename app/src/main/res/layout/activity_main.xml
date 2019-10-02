@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient"
@@ -280,18 +281,18 @@
             android:measureWithLargestChild="true"
             android:orientation="vertical">
 
-            <EditText
+            <TextView
                 android:id="@+id/address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DHAKA, BD"
+                android:text="PUNE, IN"
                 android:textSize="24dp" />
 
             <TextView
                 android:id="@+id/updated_at"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20 April 2012, 20:08 PM"
+                android:text="----"
                 android:textSize="14dp" />
 
         </LinearLayout>
@@ -299,20 +300,22 @@
     </RelativeLayout>
 
 
-    <ProgressBar
-        android:id="@+id/loader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
-
     <TextView
         android:id="@+id/errorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Something went wrong"
+        android:text="@string/err_msg"
+        android:textSize="16sp"
         android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/loader"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        tools:visibility="gone" />
 
 
 </RelativeLayout>
