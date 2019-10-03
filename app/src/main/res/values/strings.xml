@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Weather App</string>
+    <string name="err_msg">PLEASE CHECK YOUR INTERNET CONNECTION!</string>
 </resources>
