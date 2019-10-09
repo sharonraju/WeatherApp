@@ -1,27 +1,18 @@
 package com.androdocs.weatherapp;
 
-//import android.os.AsyncTask;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
-import com.androdocs.httprequest.HttpRequest;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.io.InputStream;
-//import com.androdocs.httprequest.HttpRequest;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView updated_atTxt, statusTxt, tempTxt, temp_minTxt, temp_maxTxt, sunriseTxt,
             sunsetTxt, windTxt, pressureTxt, humidityTxt;
-    EditText address;
+    AutoCompleteTextView address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +41,26 @@ public class MainActivity extends AppCompatActivity {
         windTxt = findViewById(R.id.wind);
         pressureTxt = findViewById(R.id.pressure);
         humidityTxt = findViewById(R.id.humidity);
+        address = findViewById(R.id.addr);
 
-        new WeatherTask().execute();
+
+        new WeatherTask().execute("Pune");
+
+        String[] cities = getResources().getStringArray(R.array.india_cities);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, cities);
+        address.setAdapter(adapter);
+
+        address.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCity = address.getText().toString();
+                new WeatherTask().execute(selectedCity);
+            }
+        });
     }
 
     class WeatherTask extends AsyncTask<String, Void, String> {
-        String CITY = "Pune,IN";
+        String CITY;
 
         @Override
         protected void onPreExecute() {
@@ -69,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... args) {
             String data;
+            CITY = args[0];
             data = ((new WeatherHttpClient()).getWeatherData(CITY));
             return data;
         }
@@ -100,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 String windSpeed = wind.getString("speed");
                 String weatherDescription = weather.getString("description");
 
-                String address = jsonObj.getString("name") + ", " + sys.getString("country");
+//                String address = jsonObj.getString("name") + ", " + sys.getString("country");
 
 
 
@@ -166,8 +172,16 @@ class WeatherHttpClient {
             e.printStackTrace();
         }
         finally {
-            try { is.close(); } catch(Exception e) {}
-            try { con.disconnect(); } catch(Exception e) {}
+            try {
+                is.close();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                con.disconnect();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
         return "";
     }
