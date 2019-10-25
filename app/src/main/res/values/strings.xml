@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Weather App</string>
     <string name="err_msg">PLEASE CHECK YOUR INTERNET CONNECTION!</string>
+    <string name="search_placeholder">Search a city</string>
     <string-array name="india_cities">
         <item>Mumbai</item>
         <item>Delhi</item>
