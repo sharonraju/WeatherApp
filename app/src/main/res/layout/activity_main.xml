@@ -26,6 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@color/colorText"
                 android:text="Clear Sky"
                 android:textSize="18dp" />
 
@@ -36,6 +37,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif-thin"
                 android:text="29°C"
+                android:textColor="@color/colorText"
                 android:textSize="90sp" />
 
             <LinearLayout
@@ -48,7 +50,8 @@
                     android:id="@+id/temp_min"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Min Temp: 05:05 AM" />
+                    android:text="Min Temp: 05:05 AM"
+                    android:textColor="@color/colorText"/>
 
                 <Space
                     android:layout_width="50dp"
@@ -58,7 +61,8 @@
                     android:id="@+id/temp_max"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Max Temp: 05:05 PM" />
+                    android:text="Max Temp: 05:05 PM"
+                    android:textColor="@color/colorText"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -99,14 +103,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sunrise"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:textColor="@color/colorText"/>
 
                     <TextView
                         android:id="@+id/sunrise"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="06:40 AM"
-                        android:textSize="14dp" />
+                        android:textSize="14dp"
+                        android:textColor="@color/colorText"/>
                 </LinearLayout>
 
                 <Space
@@ -136,14 +142,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sunset"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:textColor="@color/colorText"/>
 
                     <TextView
                         android:id="@+id/sunset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="06:40 AM"
-                        android:textSize="14dp" />
+                        android:textSize="14dp"
+                        android:textColor="@color/colorText"/>
                 </LinearLayout>
 
                 <Space
@@ -174,14 +182,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Wind"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:textColor="@color/colorText"/>
 
                     <TextView
                         android:id="@+id/wind"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="06:40 AM"
-                        android:textSize="14dp" />
+                        android:textSize="14dp"
+                        android:textColor="@color/colorText"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -223,14 +233,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Pressure"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:textColor="@color/colorText"/>
 
                     <TextView
                         android:id="@+id/pressure"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="06:40 AM"
-                        android:textSize="14dp" />
+                        android:textSize="14dp"
+                        android:textColor="@color/colorText"/>
                 </LinearLayout>
 
                 <Space
@@ -260,14 +272,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Humidity"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:textColor="@color/colorText"/>
 
                     <TextView
                         android:id="@+id/humidity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="06:40 AM"
-                        android:textSize="14dp" />
+                        android:textSize="14dp"
+                        android:textColor="@color/colorText"/>
                 </LinearLayout>
 
                 <Space
@@ -293,8 +307,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
-                android:text="PUNE, IN"
+                android:hint="@string/search_placeholder"
                 android:textAlignment="center"
+                android:textColor="@color/colorText"
+                android:textCursorDrawable="@android:color/white"
+                android:backgroundTint="@android:color/white"
                 android:textSize="24dp" />
 
             <TextView
@@ -302,13 +319,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="----"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:textColor="@color/colorText"/>
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/loc"
                 android:layout_width="match_parent"
-                android:layout_height="47dp"
-                android:text="Location:" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:text="Location:"
+                android:textColor="@color/colorText"/>
 
         </LinearLayout>
 
@@ -322,7 +343,8 @@
         android:layout_centerInParent="true"
         android:text="@string/err_msg"
         android:textSize="16sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:textColor="@color/colorText"/>
 
     <ProgressBar
         android:id="@+id/loader"
